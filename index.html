@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>40分タイマー</title>
+  <style>
+    button {
+      font-size: 20px;
+      padding: 10px 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>40分タイマー</h1>
+  <button onclick="startTimer()" ontouchstart="startTimer()">スタート</button>
+  <button onclick="stopTimer()" ontouchstart="stopTimer()">ストップ</button>
+  <p id="timer">00:00</p>
+
+  <script>
+    var timerId;
+    var startTime;
+    var restartTime = 10 * 60 * 1000; // 10分後の時間（ミリ秒単位）
+
+    function startTimer() {
+      clearInterval(timerId);
+      startTime = Date.now();
+      timerId = setInterval(function() {
+        var elapsedTime = Date.now() - startTime;
+        var minutes = Math.floor(elapsedTime / 60000);
+        var seconds = Math.floor((elapsedTime % 60000) / 1000);
+        var formattedTime = padZero(minutes) + ':' + padZero(seconds);
+        document.getElementById('timer').textContent = formattedTime;
+
+        if (elapsedTime >= 40 * 60 * 1000) {
+          console.log('40分経過しました。');
+          restartTimer();
+        }
+      }, 1000);
+      console.log('40分タイマーを開始しました。');
+    }
+
+    function stopTimer() {
+      clearInterval(timerId);
+      console.log('40分タイマーを停止しました。');
+    }
+
+    function restartTimer() {
+      setTimeout(function() {
+        startTimer();
+      }, restartTime);
+      console.log('10分後に40分タイマーを再開します。');
+    }
+
+    function padZero(number) {
+      return (number < 10 ? '0' : '') + number;
+    }
+  </script>
+</body>
+</html>

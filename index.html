@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>40 minute timer</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="timer_FILL0_wght400_GRAD0_opsz48.png" sizes="32x32">
+    <style>
+        /* 追加したCSS */
+        .menu-icon {
+          display: none; /* 初期状態では非表示 */
+          cursor: pointer;
+          padding: 10px;
+        }
+        
+        .menu-icon::before,
+        .menu-icon::after {
+          content: "";
+          display: block;
+          background-color: #333;
+          height: 3px;
+          width: 20px;
+          margin-bottom: 3px;
+        }
+        
+        @media only screen and (max-width: 600px) {
+          nav ul {
+            display: none; /* 初期状態では非表示 */
+          }
+          
+          nav ul li {
+            display: block;
+            margin-bottom: 10px;
+          }
+          
+          /* メニューアイコンを表示 */
+          .menu-icon {
+            display: block;
+          }
+        }
+      </style>
+</head>
+<body>
+        <nav>
+          <ul>
+            <li><a href="https://god-paper.github.io/">Home</a></li>
+            <li><a href="https://god-paper.github.io/timer">Timer</a></li>
+            <li><a href="https://github.com/god-paper">GitHub</a></li>
+            <li><a href="https://twitter.com/wawonabc123">Twitter</a></li>
+          </ul>
+        </nav>
+    <h1>40 minute timer</h1>
+    <h1 id="timer">40:00</h1>
+    <div style="display: flex; justify-content: center;">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/qYnA9wWFHLI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      
+    <script>
+        var countdownMinutes = 40;
+        var countdownSeconds = 0;
+        var timerInterval;
+    
+        function updateTimer() {
+          var timerElement = document.getElementById("timer");
+          timerElement.textContent = formatTime(countdownMinutes) + ":" + formatTime(countdownSeconds);
+    
+          if (countdownMinutes === 0 && countdownSeconds === 0) {
+            clearInterval(timerInterval);
+            alert("40分経過しました！");
+    
+            // 5秒待機してから3分タイマーを開始
+            setTimeout(startThreeMinuteTimer, 5000);
+            return;
+          }
+    
+          if (countdownSeconds === 0) {
+            countdownMinutes--;
+            countdownSeconds = 59;
+          } else {
+            countdownSeconds--;
+          }
+        }
+    
+        function formatTime(time) {
+          return time < 10 ? "0" + time : time;
+        }
+    
+        timerInterval = setInterval(updateTimer, 1000);
+    
+        function startThreeMinuteTimer() {
+          countdownMinutes = 3;
+          countdownSeconds = 0;
+          var timerElement = document.getElementById("timer");
+    
+          timerInterval = setInterval(function() {
+            timerElement.textContent = formatTime(countdownMinutes) + ":" + formatTime(countdownSeconds);
+    
+            if (countdownMinutes === 0 && countdownSeconds === 0) {
+              clearInterval(timerInterval);
+              alert("3分経過しました！");
+    
+              // 5秒待機してから40分タイマーを再度開始
+              setTimeout(startFortyMinuteTimer, 5000);
+              return;
+            }
+    
+            if (countdownSeconds === 0) {
+              countdownMinutes--;
+              countdownSeconds = 59;
+            } else {
+              countdownSeconds--;
+            }
+          }, 1000);
+        }
+    
+        function startFortyMinuteTimer() {
+          countdownMinutes = 40;
+          countdownSeconds = 0;
+          timerInterval = setInterval(updateTimer, 1000);
+        }
+    
+        // 最初に3分タイマーを開始
+        setTimeout(startThreeMinuteTimer, 40 * 60 * 1000);
+      </script>
+      <script>
+        // メニューアイコンがクリックされた時にメニューを表示・非表示する処理
+        document.querySelector('.menu-icon').addEventListener('click', function() {
+          document.querySelector('nav ul').classList.toggle('show');
+        });
+      </script>
+</body>
+</html>
